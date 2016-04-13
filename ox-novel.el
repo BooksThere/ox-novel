@@ -293,7 +293,7 @@ holding contextual information."
 CONTENTS is the transcoded contents string.  INFO is a plist
 holding export options."
   (concat
-   "\\documentclass[a5j,10pt,uplatex,openleft,dvipdfmx]{utbook}
+   "\\documentclass[a5j,10pt,uplatex,openright,dvipdfmx]{utbook}
 \\usepackage[uplatex,deluxe]{otf}
 \\usepackage{pxrubrica}
 \\usepackage{setspace}
