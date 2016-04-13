@@ -1,13 +1,15 @@
 ;; ox-novel.el --- translate .org into .latex using utbook for writing novel
 
 ;;; Commentary:
-;; 
+;; This library implements a translater from .org file into .pdf file for writing novel.
+;; .tex file is simply the intermediate product.
+;; LaTeX back-end for Org is simply the auxiliary tool.
 
 ;;; Code:
 (require 'ox)
 
 
-;; Define Backend
+;; Define Back-End
 (org-export-define-backend
     'novel
   '(
@@ -65,37 +67,37 @@ Use utf-8 as the default value."
 
 
 (defcustom org-novel-address ""
-  "address"
+  "Address of author."
   :group 'org-export-novel
   :type '(string :tag "String"))
 
 (defcustom org-novel-edition ""
-  "edition"
+  "Edition."
   :group 'org-export-novel
   :type '(string :tag "String"))
 
 (defcustom org-novel-subtitle ""
-  "subtitle"
+  "Subtitle of the book."
   :group 'org-export-novel
   :type '(string :tag "String"))
 
 (defcustom org-novel-printer ""
-  "printer"
+  "Printer."
   :group 'org-export-novel
   :type '(string :tag "String"))
 
 (defcustom org-novel-published ""
-  "published date"
+  "Published date."
   :group 'org-export-novel
   :type '(string :tag "String"))
 
 (defcustom org-novel-publisher ""
-  "publisher"
+  "Publisher."
   :group 'org-export-novel
   :type '(string :tag "String"))
 
 (defcustom org-export-with-size 'normal
-  "font size"
+  "Font size."
   :group 'org-export-novel
   :type '(choice
 	  (const :tag "small size" small)
@@ -103,7 +105,7 @@ Use utf-8 as the default value."
 	  (const :tag "large size" large)))
 
 (defcustom org-export-with-sec-prefix ""
-  "font size"
+  "Prefix of section's text."
   :group 'org-export-novel
   :type '(string :tag "String"))
 
@@ -118,9 +120,14 @@ Use utf-8 as the default value."
 ;;
 
 (defun org-novel-bold (bold contents info)
+  "Transcode BOLD from Org to LaTeX.
+CONTENTS is the text with bold markup.
+INFO is a plist holding contextual information."
   (format "\\textbf{\\textgt{%s}}" contents))
 
 (defun org-novel--colophon (info)
+  "Generate LaTeX script, which designate colophon.
+INFO is a plist holdin contextual information."
   (concat
    (format "
 \\newpage
@@ -179,6 +186,7 @@ Use utf-8 as the default value."
       ))
 
 (defun org-novel--font-size (info)
+  "Generate LaTeX script, which specify font-size and line-height from INFO."
   (let ((size (plist-get info :with-size)))
     (cond ((member size '(normalsize normal))
 	   "\\setstretch{1.2}\n\\normalsize")
@@ -186,6 +194,10 @@ Use utf-8 as the default value."
 	  (t "\\setstretch{1.4}\n\\small"))))
 
 (defun org-novel-headline (headline contents info)
+  "Transcode a HEADLINE element from Org to LaTeX.
+This script processes until the heading of level 2.
+CONTENTS holds the contents of the headline.  INFO is a plist
+holding contextual information."
   (let ((level (org-export-get-relative-level headline info))
 	(text (org-export-data (org-element-property :title headline) info))
 	(sec-prefix (plist-get info :with-sec-prefix)))
@@ -211,6 +223,12 @@ Use utf-8 as the default value."
     ))
 
 (defun org-novel-link (link desc info)
+  "Transcode a LINK object from Org to LaTeX.
+Fuzzy type link is treated as a ruby.
+
+DESC is the description part of the link, or the empty string.
+INFO is a plist holding contextual information.  See
+`org-export-data'."
   (let* ((type (org-element-property :type link))
 	 (raw-path (org-element-property :path link))
 	 (path (if (not (file-name-absolute-p raw-path)) raw-path
@@ -226,20 +244,34 @@ Use utf-8 as the default value."
     ))
 
 (defun org-novel-paragraph (paragraph contents info)
+  "Transcode a PARAGRAPH element from Org to LaTeX.
+CONTENTS is the contents of the paragraph, as a string.  INFO is
+the plist used as a communication channel."
   (let* ((parent (org-export-get-parent-element paragraph))
 	 (ptype (org-element-type parent)))
     (if (memq ptype '(special-block item)) contents
       (format "%s~" (replace-regexp-in-string "\n" "\n\n" contents)))))
 
 (defun org-novel-plain-text (text info)
+  "Transcode a TEXT string from Org to LaTeX.
+Sentence that the first character is a square bracket will not be indented.
+
+TEXT is the string to transcode.  INFO is a plist holding
+contextual information."
   (replace-regexp-in-string "「"
 			    "\\\\noindent\\\\inhibitglue「"
 			    text))
 
 (defun org-novel-section (section contents info)
+  "Transcode a SECTION element from Org to LaTeX.
+CONTENTS holds the contents of the section.  INFO is a plist
+holding contextual information."
   contents)
 
 (defun org-novel-template (contents info)
+  "Return complete document string after LaTeX conversion.
+CONTENTS is the transcoded contents string.  INFO is a plist
+holding export options."
   (concat
    "\\documentclass[a5j,10pt,uplatex,openleft,dvipdfmx]{utbook}
 \\usepackage[uplatex,deluxe]{otf}
@@ -254,7 +286,7 @@ Use utf-8 as the default value."
 
 \\begin{document}
 "
-   (org-novel-title info)
+   (org-novel--title info)
    (org-novel--toc info)
    "
 \%\% main
@@ -276,7 +308,8 @@ Use utf-8 as the default value."
 "
    ))
 
-(defun org-novel-title (info)
+(defun org-novel--title (info)
+  "LaTeX script which genarates title-page from INFO."
   (format
    
    "
@@ -298,6 +331,8 @@ Use utf-8 as the default value."
    ))
 
 (defun org-novel--title-form (info)
+  "Auxiliary function of `org-novel--title'.
+INFO is a plist holding contextual information."
     (concat
      (format
       "\\begin{center}
@@ -322,6 +357,10 @@ Use utf-8 as the default value."
       )))
 
 (defun org-novel--toc (info)
+  "LaTeX command to set the table of contents.
+Auxiliary function of `org-novel--title'.
+
+INFO is a plist holding contextual information."
   (let ((depth (plist-get info :with-toc)))
     (when depth
       (concat
@@ -333,6 +372,9 @@ Use utf-8 as the default value."
        "\\tableofcontents"))))
 
 (defun org-novel-verbatim (verbatim contents info)
+  "Transcode a VERBATIM object from Org to LaTeX.
+CONTENTS is nil.  INFO is a plist used as a communication
+channel."
   (format "{\\tt %s}" (org-element-property :value verbatim)))
 
 
@@ -341,17 +383,53 @@ Use utf-8 as the default value."
 ;;
 
 (defun org-novel-publish-to-latex (plist filename pub-dir)
+  "Publish an Org file to LaTeX.
+
+PLIST is the property list for the given project. 
+FILENAME is the filename of the Org file to be published. 
+PUB-DIR is the publishing directory.
+
+Return output file name."
   (org-publish-org-to 'novel filename
 		      (concat ".tex")
 		      plist pub-dir))
 
 (defun org-novel-to-buffer (&optional async subtreep visible-only body-only ext-plist)
+    "Export current buffer as a LaTeX buffer.
+
+If narrowing is active in the current buffer, only export its
+narrowed part.
+
+If a region is active, export that region.
+
+A non-nil optional argument ASYNC means the process should happen
+asynchronously.  The resulting buffer should be accessible
+through the `org-export-stack' interface.
+
+When optional argument SUBTREEP is non-nil, export the sub-tree
+at point, extracting information from the headline properties
+first.
+
+When optional argument VISIBLE-ONLY is non-nil, don't export
+contents of hidden elements.
+
+When optional argument BODY-ONLY is non-nil, only write code
+between \"\\begin{document}\" and \"\\end{document}\".
+
+EXT-PLIST, when provided, is a property list with external
+parameters overriding Org default settings, but still inferior to
+file-local settings.
+
+Export is done in a buffer named \"*Org LATEX Export*\", which
+will be displayed when `org-export-show-temporary-export-buffer'
+is non-nil."
   (interactive)
   (org-export-to-buffer 'novel "*Org Novel Export*"
     async subtreep visible-only body-only ext-plist
     (lambda () (latex-mode))))
 
 (defun org-novel-to-latex (&optional async subtreep visible-only body-only ext-plist)
+  "Assume the current region has org-mode syntax, and convert it to LaTeX."
   (interactive)
   (let* ((extension ".tex")
 	 (file (org-export-output-file-name extension subtreep))
@@ -360,7 +438,33 @@ Use utf-8 as the default value."
       async subtreep visible-only body-only ext-plist)))
 
 (defun org-novel-export-to-pdf
-  (&optional async subtreep visible-only body-only ext-plist)
+    (&optional async subtreep visible-only body-only ext-plist)
+  "Export current buffer to LaTeX then process through to PDF.
+
+If narrowing is active in the current buffer, only export its
+narrowed part.
+
+If a region is active, export that region.
+
+A non-nil optional argument ASYNC means the process should happen
+asynchronously.  The resulting file should be accessible through
+the `org-export-stack' interface.
+
+When optional argument SUBTREEP is non-nil, export the sub-tree
+at point, extracting information from the headline properties
+first.
+
+When optional argument VISIBLE-ONLY is non-nil, don't export
+contents of hidden elements.
+
+When optional argument BODY-ONLY is non-nil, only write code
+between \"\\begin{document}\" and \"\\end{document}\".
+
+EXT-PLIST, when provided, is a property list with external
+parameters overriding Org default settings, but still inferior to
+file-local settings.
+
+Return PDF file's name."
   (interactive)
   (let ((outfile (org-export-output-file-name ".tex" subtreep)))
     (org-export-to-file 'novel outfile
@@ -368,6 +472,10 @@ Use utf-8 as the default value."
       (lambda (file) (org-novel-compile file)))))
 
 (defun org-novel-compile (texfile)
+  "Compile a TeX file.
+
+TEXFILE is the name of the file being compiled.
+Processing is done by uplatex and dvipdfmx."
   (let* ((base-name (file-name-sans-extension (file-name-nondirectory texfile)))
 	 (full-name (file-truename texfile))
 	 (out-dir (file-name-directory texfile))
