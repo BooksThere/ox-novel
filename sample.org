@@ -4,7 +4,7 @@
 #+PUBLISHER: そこそこ
 #+PUBLISHED: 平成 28 年 4 月 12 日
 #+EDITION: 初版
-#+OPTIONS: toc:nil size:small sec-prefix:"＊"
+#+OPTIONS: toc:0 size:small sec-prefix:"＊"
 
 * 第一章
   これより *第一章* を開始。
