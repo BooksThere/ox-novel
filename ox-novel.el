@@ -1,9 +1,12 @@
-;; 
-;; ox-novel: translate .org into .latex using utbook for writing novel
+;; ox-novel.el --- translate .org into .latex using utbook for writing novel
+
+;;; Commentary:
 ;; 
 
+;;; Code:
 (require 'ox)
 
+
 ;; Define Backend
 (org-export-define-backend
     'novel
@@ -43,6 +46,7 @@
     (:with-sec-prefix nil "sec-prefix" org-export-with-sec-prefix)
     ))
 
+
 ;; --------------------------------
 ;;  Custom Variables
 ;;
@@ -103,10 +107,12 @@ Use utf-8 as the default value."
   :group 'org-export-novel
   :type '(string :tag "String"))
 
+
 ;; --------------------------------
 ;;  variables
 ;;
 
+
 ;; --------------------------------
 ;;  Transcoders
 ;;
@@ -329,6 +335,7 @@ Use utf-8 as the default value."
 (defun org-novel-verbatim (verbatim contents info)
   (format "{\\tt %s}" (org-element-property :value verbatim)))
 
+
 ;; --------------------------------
 ;;  Exporter
 ;;
@@ -379,8 +386,10 @@ Use utf-8 as the default value."
 	  pdffile))
       )))
 
+
 ;; --------------------------------
 ;;  Provide
 ;; 
 
 (provide 'ox-novel)
+;;; ox-novel.el ends here
