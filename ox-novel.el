@@ -378,7 +378,6 @@ INFO is a plist holding contextual information."
 
 (defun org-novel--toc (info)
   "LaTeX command to set the table of contents.
-Auxiliary function of `org-novel--title'.
 
 INFO is a plist holding contextual information."
   (let ((depth (plist-get info :with-toc)))
