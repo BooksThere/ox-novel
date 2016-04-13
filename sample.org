@@ -1,0 +1,26 @@
+#+TITLE: Sample:サンプル小説
+#+SUBTITLE: Org-mode で記述された小説が如何様な PDF になるのか。
+#+AUTHOR: 本田そこ
+#+PUBLISHER: そこそこ
+#+PUBLISHED: 平成 28 年 4 月 12 日
+#+EDITION: 初版
+#+OPTIONS: toc:nil size:small sec-prefix:"＊"
+
+* 第一章
+  これより *第一章* を開始。
+
+** 第一節
+   
+   サンプルテキスト。
+
+** 第二節
+
+   サンプルテキストその 2。
+
+* 第二章
+
+  これからは第二章。
+
+** 第一節
+
+   このようにして[[かんじ][漢字]]にルビを振ることも可能。
