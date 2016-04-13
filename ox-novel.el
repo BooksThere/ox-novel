@@ -1,5 +1,25 @@
 ;; ox-novel.el --- translate .org into .latex using utbook for writing novel
 
+;; Copyright (C) 2016 BooksThere
+
+;; Author: BooksThere <BooksThere@gmail.com>
+;; Keywords: org, novel
+
+;; This program is not part of GNU Emacs.
+
+;; This program is free software: you can redistribute it and/or modify
+;; it under the terms of the GNU General Public License as published by
+;; the Free Software Foundation, either version 3 of the License, or
+;; (at your option) any later version.
+
+;; This program is distributed in the hope that it will be useful,
+;; but WITHOUT ANY WARRANTY; without even the implied warranty of
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+;; GNU General Public License for more details.
+
+;; You should have received a copy of the GNU General Public License
+;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
 ;;; Commentary:
 ;; This library implements a translater from .org file into .pdf file for writing novel.
 ;; .tex file is simply the intermediate product.
