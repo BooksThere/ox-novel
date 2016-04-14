@@ -21,7 +21,7 @@
 ;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 ;;; Commentary:
-;; This library implements a translater from .org file into .pdf file for writing novel.
+;; This library implements a translator from the .org files into .pdf files for writing novel.
 ;; .tex file is simply the intermediate product.
 ;; LaTeX back-end for Org is simply the auxiliary tool.
 
@@ -330,9 +330,8 @@ holding export options."
 
 (defun org-novel--title (info)
   "LaTeX script which genarates title-page from INFO."
-  (format
-   
-   "
+    (concat
+     "
 \%\%\%\% titlepage
 \\setlength{\\oddsidemargin}{-0.9cm}
 \\setlength{\\evensidemargin}{-0.9cm}
@@ -341,19 +340,7 @@ holding export options."
 
 \\thispagestyle{empty}
 \\begin{landscape}
-
-%s
-
-\\end{landscape}
-\\newpage
 "
-   (org-novel--title-form info)
-   ))
-
-(defun org-novel--title-form (info)
-  "Auxiliary function of `org-novel--title'.
-INFO is a plist holding contextual information."
-    (concat
      (format
       "\\begin{center}
 \\rotatepbox{\\huge %s}
@@ -374,7 +361,12 @@ INFO is a plist holding contextual information."
 \\end{center}
 "
       (car (plist-get info :author))
-      )))
+      )
+     "
+\\end{landscape}
+\\newpage
+"
+     ))
 
 (defun org-novel--toc (info)
   "LaTeX command to set the table of contents.
