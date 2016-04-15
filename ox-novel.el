@@ -229,15 +229,14 @@ holding contextual information."
 "
 		    text text))
 	   ((= level 2)
-	    (if (string= text "") ""
-	      (format "
+	    (format "
 \\hspace{1.0em}\\textgt{%s%s}
 \\addcontentsline{toc}{section}{%s}
 
 ~
 
 "
-		      sec-prefix text text)))
+		      sec-prefix text text))
 	   (t ""))
      contents)
     ))
