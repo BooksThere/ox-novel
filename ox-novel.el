@@ -40,7 +40,6 @@
     (section . org-novel-section)
     (plain-text . org-novel-plain-text)
     (template . org-novel-template)
-    (title . org-novel-title)
     (verbatim . org-novel-verbatim)
     )
   :export-block "NOVEL"
@@ -136,6 +135,15 @@ Use utf-8 as the default value."
 
 
 ;; --------------------------------
+;;  auxiliary function
+;;
+
+(defun unless-null-format-1 (format-string str)
+  "Format with FORMAT-STRING when STR is not null."
+  (if (string= str "") "" (format format-string str)))
+
+
+;; --------------------------------
 ;;  Transcoders
 ;;
 
@@ -164,19 +172,12 @@ INFO is a plist holdin contextual information."
 \\rotatepbox{{\\Large %s}}
 %s
 \\vspace{1zw}
-
 \\rotatepbox{%s %s}
 "
 	   (org-export-data (plist-get info :title) info)
-	   (let ((subt (plist-get info :subtitle)))
-	     (if (string= subt "") ""
-	       (format "
-\\vspace{1ex}
-
-\\rotatepbox{{\\normalsize %s}}
-
-"
-		       subt)))
+	   (unless-null-format-1 "\\vspace{1ex}
+\\rotatepbox{{\\normalsize %s}}"
+				 (plist-get info :subtitle))
 	   (plist-get info :published)
 	   (plist-get info :edition))
    "
@@ -186,19 +187,13 @@ INFO is a plist holdin contextual information."
    (let ((author (car (plist-get info :author))))
      (if author (format "\\raiserotatepbox{著者} & \\raiserotatepbox{%s}" author)
        ""))
-   (let ((publisher (plist-get info :publisher)))
-     (if (string= publisher "") ""
-       (format "\\\\\\raiserotatepbox{発行} & \\raiserotatepbox{%s}"
-	       publisher)))
-   (let ((address (plist-get info :address)))
-     (if (string= address "") ""
-       (format "\\\\\\raiserotatepbox{連絡先} & \\raiserotatepbox{%s}"
-	       address)))
-   (let ((printer (plist-get info :printer)))
-     (if (string= printer "") ""
-       (format "\\\\\\raiserotatepbox{印刷} & \\raiserotatepbox{%s}"
-	       printer)))
-   "
+   (unless-null-format-1 "\\\\\n\\raiserotatepbox{発行} & \\raiserotatepbox{%s}"
+			 (plist-get info :publisher))
+   (unless-null-format-1 "\\\\\n\\raiserotatepbox{連絡先} & \\raiserotatepbox{%s}"
+			 (plist-get info :address))
+   (unless-null-format-1 "\\\\\n\\raiserotatepbox{印刷} & \\raiserotatepbox{%s}"
+			 (plist-get info :printer))
+      "
 \\end{tabular}
 \\end{table}
 \\end{landscape}
@@ -238,8 +233,7 @@ holding contextual information."
 "
 		      sec-prefix text text))
 	   (t ""))
-     contents)
-    ))
+     contents)))
 
 (defun org-novel-link (link desc info)
   "Transcode a LINK object from Org to LaTeX.
@@ -259,8 +253,7 @@ INFO is a plist holding contextual information.  See
       (format "\\ruby[g]{%s}{%s}"
 	      (if desc desc raw-path) raw-path))
      
-     (t "nothing"))
-    ))
+     (t "nothing"))))
 
 (defun org-novel-paragraph (paragraph contents info)
   "Transcode a PARAGRAPH element from Org to LaTeX.
@@ -340,27 +333,21 @@ holding export options."
 \\thispagestyle{empty}
 \\begin{landscape}
 "
-     (format
-      "\\begin{center}
+     (format "\\begin{center}
 \\rotatepbox{\\huge %s}
 \\end{center}
 "
-      (org-export-data (plist-get info :title) info))
-     (let ((subt (plist-get info :subtitle)))
-       (if (string= subt "") ""
-	 (format 
-	  "\\begin{center}
+	     (org-export-data (plist-get info :title) info))
+     (unless-null-format-1 "\\begin{center}
 \\rotatepbox{\\large %s}
 \\end{center}
 "
-	  subt)))
-     (format 
-      "\\begin{center}
+			   (plist-get info :subtitle))
+     (format "\\begin{center}
 \\rotatepbox{\\normalsize %s}
 \\end{center}
 "
-      (car (plist-get info :author))
-      )
+	     (car (plist-get info :author)))
      "
 \\end{landscape}
 \\newpage
