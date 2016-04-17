@@ -16,7 +16,7 @@
     - =dvipdfmx=
     というコマンドが使えるようになっていること。
 
-    私は Mac で Drag&Drop UpTeX を使って環境を整えました。
+    私は Mac で [[http://www2.kumagaku.ac.jp/teacher/herogw/][Drag & Drop UpTeX]] を使って環境を整えました。
     他の環境では試してませんごめんなさい。
 ** 利用法
    1. Org-mode で小説を書く。どのように書くかは下にあるサンプルを参照。
