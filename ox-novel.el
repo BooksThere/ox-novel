@@ -170,7 +170,9 @@ INFO is a plist holdin contextual information."
 \\chapter*{}
 \\thispagestyle{empty}
 \\rotatepbox{{\\Large %s}}
+
 %s
+
 \\vspace{1zw}
 \\rotatepbox{%s %s}
 "
