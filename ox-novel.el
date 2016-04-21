@@ -345,8 +345,9 @@ holding export options."
 \\end{center}
 "
 			   (plist-get info :subtitle))
+"\\hspace{1ex}"
      (format "\\begin{center}
-\\rotatepbox{\\normalsize %s}
+\\rotatepbox{\\large %s}
 \\end{center}
 "
 	     (car (plist-get info :author)))
@@ -429,9 +430,7 @@ is non-nil."
 (defun org-novel-to-latex (&optional async subtreep visible-only body-only ext-plist)
   "Assume the current region has org-mode syntax, and convert it to LaTeX."
   (interactive)
-  (let* ((extension ".tex")
-	 (file (org-export-output-file-name extension subtreep))
-	 (org-export-coding-system oxn:coding-system))
+  (let ((file (org-export-output-file-name ".tex" subtreep)))
     (org-export-to-file 'novel file
       async subtreep visible-only body-only ext-plist)))
 
