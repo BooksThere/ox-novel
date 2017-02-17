@@ -1,0 +1,119 @@
+\documentclass[a5j,10pt,uplatex,openright,dvipdfmx]{utbook}
+\usepackage[uplatex,deluxe]{otf}
+\usepackage{pxrubrica}
+\usepackage{setspace}
+\usepackage{lscape}
+\usepackage[dvipdfmx]{graphicx}
+\usepackage{plext}
+
+\newcommand{\rotatepbox}[1]{\rotatebox{-90}{\pbox<y>{#1}}}
+\newcommand{\raiserotatepbox}[1]{\raise1ex\hbox{\rotatepbox{#1}}}
+
+\begin{document}
+
+%%%% titlepage
+\setlength{\oddsidemargin}{-0.9cm}
+\setlength{\evensidemargin}{-0.9cm}
+\setlength{\topmargin}{1.8in}
+\setlength{\textwidth}{50zw}
+
+\thispagestyle{empty}
+\begin{landscape}
+\begin{center}
+\rotatepbox{\huge Sample:サンプル小説}
+\end{center}
+\begin{center}
+\rotatepbox{\large Org-mode で記述された小説が如何様な PDF になるのか。}
+\end{center}
+\hspace{1ex}\begin{center}
+\rotatepbox{\large 本田そこ}
+\end{center}
+
+\end{landscape}
+\newpage
+
+%% toc
+\setcounter{tocdepth}{0}
+\tableofcontents
+\thispagestyle{empty}
+%% main
+\setlength{\oddsidemargin}{-1.2cm}
+\setlength{\evensidemargin}{-0.6cm}
+\setlength{\topmargin}{-0.5in}
+\setlength{\textwidth}{50zw}
+\setstretch{1.4}
+\small
+\twocolumn
+
+
+\chapter*{第一章}
+\addcontentsline{toc}{chapter}{第一章}
+これより \textbf{\textgt{第一章}} を開始。
+
+~
+
+
+\hspace{1.0em}\textgt{＊第一節}
+\addcontentsline{toc}{section}{第一節}
+
+~
+
+サンプルテキスト。
+
+~
+
+
+\hspace{1.0em}\textgt{＊第二節}
+\addcontentsline{toc}{section}{第二節}
+
+~
+
+サンプルテキストその 2。
+
+~
+
+
+\chapter*{第二章}
+\addcontentsline{toc}{chapter}{第二章}
+これからは第二章。
+
+~
+
+
+\hspace{1.0em}\textgt{＊第一節}
+\addcontentsline{toc}{section}{第一節}
+
+~
+
+このようにして\ruby[g]{漢字}{かんじ}にルビを振ることも可能。
+
+~
+
+\newpage
+\onecolumn
+%% colophon
+\setlength{\oddsidemargin}{-0.9cm}
+\setlength{\evensidemargin}{-0.9cm}
+\setlength{\topmargin}{1.5in}
+\setlength{\textwidth}{50zw}
+
+\begin{landscape}
+\chapter*{}
+\thispagestyle{empty}
+\rotatepbox{{\Large Sample:サンプル小説}}
+
+\vspace{1ex}
+\rotatepbox{{\normalsize Org-mode で記述された小説が如何様な PDF になるのか。}}
+
+\vspace{1zw}
+\rotatepbox{平成 28 年 4 月 12 日 初版}
+
+\begin{table}[htb]
+\begin{tabular}{rl}
+\raiserotatepbox{著者} & \raiserotatepbox{本田そこ}\\
+\raiserotatepbox{発行} & \raiserotatepbox{そこそこ}
+\end{tabular}
+\end{table}
+\end{landscape}
+
+\end{document}

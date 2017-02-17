@@ -1,0 +1,6 @@
+*.aux
+*.log
+*.toc
+*.dvi
+.*
+!.gitignore

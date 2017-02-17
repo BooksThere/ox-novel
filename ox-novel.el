@@ -220,11 +220,13 @@ holding contextual information."
 	(sec-prefix (plist-get info :with-sec-prefix)))
     (concat
      (cond ((= level 1)
-	    (format "
+	    (if (string= text "")
+		"\n\\chapter*{}\n\\vspace{-12.5em}"
+	      (format "
 \\chapter*{%s}
 \\addcontentsline{toc}{chapter}{%s}
 "
-		    text text))
+		      text text)))
 	   ((= level 2)
 	    (format "
 \\hspace{1.0em}\\textgt{%s%s}
@@ -272,9 +274,11 @@ Sentence that the first character is a square bracket will not be indented.
 
 TEXT is the string to transcode.  INFO is a plist holding
 contextual information."
-  (replace-regexp-in-string "「"
-			    "\\\\noindent\\\\inhibitglue「"
-			    text))
+  (replace-regexp-in-string "『"
+			    "\\\\noindent\\\\inhibitglue『"
+			    (replace-regexp-in-string "「"
+						      "\\\\noindent\\\\inhibitglue「"
+						      text)))
 
 (defun org-novel-section (section contents info)
   "Transcode a SECTION element from Org to LaTeX.
@@ -369,7 +373,8 @@ INFO is a plist holding contextual information."
 "
        (when (wholenump depth)
 	 (format "\\setcounter{tocdepth}{%d}\n" depth))
-       "\\tableofcontents"))))
+       "\\tableofcontents\n"
+       "\\thispagestyle{empty}"))))
 
 (defun org-novel-verbatim (verbatim contents info)
   "Transcode a VERBATIM object from Org to LaTeX.
