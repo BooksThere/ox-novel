@@ -159,46 +159,49 @@ INFO is a plist holdin contextual information."
   (concat
    (format "
 \\newpage
-\\onecolumn
 \%\%\%\% colophon
 \\setlength{\\oddsidemargin}{-0.9cm}
 \\setlength{\\evensidemargin}{-0.9cm}
-\\setlength{\\topmargin}{1.5in}
-\\setlength{\\textwidth}{50zw}
+\\setlength{\\topmargin}{1.2in}
+\\setlength{\\textwidth}{50\\zw}
 
-\\begin{landscape}
 \\chapter*{}
 \\thispagestyle{empty}
-\\rotatepbox{{\\Large %s}}
+
+\\begin{table}[htb]
+\\vtop{\\yoko
+\\hbox{{\\Large %s}}
 
 %s
 
-\\vspace{1zw}
-\\rotatepbox{%s %s}
+\\vspace{1\\zw}
+\\hbox{%s %s}
 "
 	   (org-export-data (plist-get info :title) info)
 	   (unless-null-format-1 "\\vspace{1ex}
-\\rotatepbox{{\\normalsize %s}}"
+\\hbox{\\normalsize %s}"
 				 (plist-get info :subtitle))
 	   (plist-get info :published)
 	   (plist-get info :edition))
    "
-\\begin{table}[htb]
+\\vspace{1\\zw}
+\\hbox{
 \\begin{tabular}{rl}
 "
    (let ((author (car (plist-get info :author))))
-     (if author (format "\\raiserotatepbox{著者} & \\raiserotatepbox{%s}" author)
+     (if author (format "著者 & %s" author)
        ""))
-   (unless-null-format-1 "\\\\\n\\raiserotatepbox{発行} & \\raiserotatepbox{%s}"
+   (unless-null-format-1 "\\\\\n発行 & %s"
 			 (plist-get info :publisher))
-   (unless-null-format-1 "\\\\\n\\raiserotatepbox{連絡先} & \\raiserotatepbox{%s}"
+   (unless-null-format-1 "\\\\\n連絡先 & %s"
 			 (plist-get info :address))
-   (unless-null-format-1 "\\\\\n\\raiserotatepbox{印刷} & \\raiserotatepbox{%s}"
+   (unless-null-format-1 "\\\\\n印刷 & %s"
 			 (plist-get info :printer))
       "
 \\end{tabular}
+}
+}
 \\end{table}
-\\end{landscape}
 "
       ))
 
@@ -254,7 +257,7 @@ INFO is a plist holding contextual information.  See
     (cond
      (image-p (format "\\rotatebox{90}{\\includegraphics{%s}}" path))
      ((string= type "fuzzy")
-      (format "\\ruby[g]{%s}{%s}"
+      (format "\\ruby{%s}{%s}"
 	      (if desc desc raw-path) raw-path))
      
      (t "nothing"))))
@@ -291,16 +294,10 @@ holding contextual information."
 CONTENTS is the transcoded contents string.  INFO is a plist
 holding export options."
   (concat
-   "\\documentclass[a5j,10pt,uplatex,openright,dvipdfmx]{utbook}
-\\usepackage[uplatex,deluxe]{otf}
-\\usepackage{pxrubrica}
+   "\\documentclass[a5j,10pt,lualatex,openright]{ltjtbook}
+\\usepackage{luatexja}
+\\usepackage{luatexja-ruby}
 \\usepackage{setspace}
-\\usepackage{lscape}
-\\usepackage[dvipdfmx]{graphicx}
-\\usepackage{plext}
-
-\\newcommand{\\rotatepbox}[1]{\\rotatebox{-90}{\\pbox<y>{#1}}}
-\\newcommand{\\raiserotatepbox}[1]{\\raise1ex\\hbox{\\rotatepbox{#1}}}
 
 \\begin{document}
 "
@@ -311,7 +308,7 @@ holding export options."
 \\setlength{\\oddsidemargin}{-1.2cm}
 \\setlength{\\evensidemargin}{-0.6cm}
 \\setlength{\\topmargin}{-0.5in}
-\\setlength{\\textwidth}{50zw}
+\\setlength{\\textwidth}{50\\zw}
 "
    (org-novel--font-size info)
    "
@@ -334,29 +331,23 @@ holding export options."
 \\setlength{\\oddsidemargin}{-0.9cm}
 \\setlength{\\evensidemargin}{-0.9cm}
 \\setlength{\\topmargin}{1.8in}
-\\setlength{\\textwidth}{50zw}
 
 \\thispagestyle{empty}
-\\begin{landscape}
 "
-     (format "\\begin{center}
-\\rotatepbox{\\huge %s}
-\\end{center}
+     (format "\\vbox{\\yoko
+\\hbox to 32\\zw{\\huge \\hfill %s \\hfill}
 "
 	     (org-export-data (plist-get info :title) info))
-     (unless-null-format-1 "\\begin{center}
-\\rotatepbox{\\large %s}
-\\end{center}
+     (unless-null-format-1 "\\vspace{0.5ex}
+\\hbox to 32\\zw{\\large \\hfill %s \\hfill}
 "
 			   (plist-get info :subtitle))
-"\\hspace{1ex}"
-     (format "\\begin{center}
-\\rotatepbox{\\large %s}
-\\end{center}
+"\\vspace{1ex}"
+     (format "\\hbox to 32\\zw{\\large \\hfill %s \\hfill}
 "
 	     (car (plist-get info :author)))
      "
-\\end{landscape}
+}
 \\newpage
 "
      ))
@@ -486,8 +477,8 @@ Processing is done by uplatex and dvipdfmx."
 				(file-name-directory full-name)
 			      default-directory)))
     (save-window-excursion
-      (let ((command (format "uplatex %s; uplatex %s; dvipdfmx -p %s %s"
-			     texfile texfile "a5" out-dvi-name)))
+      (let ((command (format "lualatex %s; lualatex %s"
+			     texfile texfile)))
 	(shell-command command))
       (let ((pdffile (concat out-dir base-name ".pdf")))
 	(if (not (file-exists-p pdffile))

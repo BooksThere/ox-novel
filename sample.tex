@@ -1,13 +1,7 @@
-\documentclass[a5j,10pt,uplatex,openright,dvipdfmx]{utbook}
-\usepackage[uplatex,deluxe]{otf}
-\usepackage{pxrubrica}
+\documentclass[a5j,10pt,lualatex,openright]{ltjtbook}
+\usepackage{luatexja}
+\usepackage{luatexja-ruby}
 \usepackage{setspace}
-\usepackage{lscape}
-\usepackage[dvipdfmx]{graphicx}
-\usepackage{plext}
-
-\newcommand{\rotatepbox}[1]{\rotatebox{-90}{\pbox<y>{#1}}}
-\newcommand{\raiserotatepbox}[1]{\raise1ex\hbox{\rotatepbox{#1}}}
 
 \begin{document}
 
@@ -15,21 +9,14 @@
 \setlength{\oddsidemargin}{-0.9cm}
 \setlength{\evensidemargin}{-0.9cm}
 \setlength{\topmargin}{1.8in}
-\setlength{\textwidth}{50zw}
+\setlength{\textwidth}{50\zw}
 
 \thispagestyle{empty}
-\begin{landscape}
-\begin{center}
-\rotatepbox{\huge Sample:サンプル小説}
-\end{center}
-\begin{center}
-\rotatepbox{\large Org-mode で記述された小説が如何様な PDF になるのか。}
-\end{center}
-\hspace{1ex}\begin{center}
-\rotatepbox{\large 本田そこ}
-\end{center}
+\hbox{
+\hbox{\yoko {\huge Sample:サンプル小説}}
+\hspace{1ex}\hbox{\yoko {\large 本田そこ}}
 
-\end{landscape}
+}
 \newpage
 
 %% toc
@@ -40,7 +27,7 @@
 \setlength{\oddsidemargin}{-1.2cm}
 \setlength{\evensidemargin}{-0.6cm}
 \setlength{\topmargin}{-0.5in}
-\setlength{\textwidth}{50zw}
+\setlength{\textwidth}{50\zw}
 \setstretch{1.4}
 \small
 \twocolumn
@@ -85,35 +72,39 @@
 
 ~
 
-このようにして\ruby[g]{漢字}{かんじ}にルビを振ることも可能。
+このようにして\ruby{漢字}{かんじ}にルビを振ることも可能。
 
 ~
 
 \newpage
-\onecolumn
 %% colophon
 \setlength{\oddsidemargin}{-0.9cm}
 \setlength{\evensidemargin}{-0.9cm}
-\setlength{\topmargin}{1.5in}
-\setlength{\textwidth}{50zw}
+\setlength{\topmargin}{1.2in}
+\setlength{\textwidth}{50\zw}
 
-\begin{landscape}
 \chapter*{}
 \thispagestyle{empty}
-\rotatepbox{{\Large Sample:サンプル小説}}
-
-\vspace{1ex}
-\rotatepbox{{\normalsize Org-mode で記述された小説が如何様な PDF になるのか。}}
-
-\vspace{1zw}
-\rotatepbox{平成 28 年 4 月 12 日 初版}
 
 \begin{table}[htb]
+\vtop{\yoko
+\hbox{{\Large Sample:サンプル小説}}
+
+
+
+\vspace{1\zw}
+\hbox{平成 29 年 2 月 18 日 第 2 版}
+
+\vspace{1\zw}
+\hbox{
 \begin{tabular}{rl}
-\raiserotatepbox{著者} & \raiserotatepbox{本田そこ}\\
-\raiserotatepbox{発行} & \raiserotatepbox{そこそこ}
+著者 & 本田そこ\\
+発行 & そこそこ\\
+連絡先 & https://twitter.com/BooksThere\\
+印刷 & GitHub
 \end{tabular}
+}
+}
 \end{table}
-\end{landscape}
 
 \end{document}
