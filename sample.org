@@ -2,9 +2,11 @@
 #+SUBTITLE: Org-mode で記述された小説が如何様な PDF になるのか。
 #+AUTHOR: 本田そこ
 #+PUBLISHER: そこそこ
-#+PUBLISHED: 平成 28 年 4 月 12 日
-#+EDITION: 初版
+#+PUBLISHED: 平成 29 年 2 月 18 日
+#+EDITION: 第 2 版
 #+OPTIONS: toc:0 size:small sec-prefix:"＊"
+#+PRINTER: GitHub
+#+ADDRESS: https://twitter.com/BooksThere
 
 * 第一章
   これより *第一章* を開始。
