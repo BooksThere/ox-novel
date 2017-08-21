@@ -42,7 +42,6 @@
     (template . org-novel-template)
     (verbatim . org-novel-verbatim)
     )
-  :export-block "NOVEL"
   :menu-entry
   '(?n "Export to Novel"
        (
