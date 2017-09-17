@@ -28,7 +28,7 @@ Although I'd like to adjust paper sizes and columns, first of all I will concent
 
     #+BEGIN_SRC emacs-lisp
     dotspacemacs-additional-packages '(
-                                      (ox-novel :location (recipe :fetcher github :repo "timoc/ox-novel")))
+              (ox-novel :location (recipe :fetcher github :repo "timoc/ox-novel")))
 
     #+END_SRC
     if you are using your own emacs, then put =ox-novel.el= in a loadable place from Emacs and where it is loaded at startup, such as =init.el=
@@ -65,7 +65,7 @@ Although I'd like to adjust paper sizes and columns, first of all I will concent
       (setq word-wrap nil)
     #+END_SRC
 
-    Why, I think that you can understand by turning on / off  =word-wrap=.
+    Why, I think that you can understand by turning on/off  =word-wrap=.
 
     Due to the nature of Emacs, when the word wrap function is on, wrapping on long line display,
     It will be done once in the space (or tab) at the beginning of the sentence.
@@ -124,9 +124,9 @@ Although I'd like to adjust paper sizes and columns, first of all I will concent
 ** =sample.pdf=
    The title page and the impression are horizontal writing. This is my hobby.
 
-   I would like to be able to select portrait / sideways someday, but the priority is low. I'm sorry.
+   I would like to be able to select portrait/sideways someday, but the priority is low. I'm sorry.
 
-   [[file: ./ sample.pdf]]
+   [[file:./sample.pdf]]
 
 * Writing
   Basically it's an ordinary Org-mode, but character decoration is for now
@@ -137,6 +137,7 @@ Although I'd like to adjust paper sizes and columns, first of all I will concent
 
   I will do it quite a bit about other writing styles.
   I will write about Rubi swing for the time being.
+
 ** Ruby swing
 
    #+BEGIN_SRC
@@ -145,7 +146,7 @@ Although I'd like to adjust paper sizes and columns, first of all I will concent
 
    Rubi will swing if you write it.
 
-   If the Org-mode setting is still in the initial state, _ pseudonym _ is displayed at the time of editing.
+   If the Org-mode setting is still in the initial state, _pseudonym_ is displayed at the time of editing.
    Rubi waved by mouse over pop up so it's convenient to say convenient.
 
    But since ruby ​​editing is a little troublesome,
@@ -154,16 +155,19 @@ Although I'd like to adjust paper sizes and columns, first of all I will concent
    #+BEGIN_SRC emacs-lisp
      (org-toggle-link-display)
    #+END_SRC
+
    It is possible to switch between parenthesized display and abbreviated display,
+
    #+BEGIN_SRC emacs-lisp
      (setq org-descriptive-links nil)
    #+END_SRC
+
    If you do, you will be in parenthesized display from whatever state you are in.
 
    =org-toggle-link-display= can be executed as =M-x org-toggle-link-display=
    Is it easy to handle?
 
-   Other == .org= It will be reflected even when editing the file, so please do it yourself.
+   Other =.org= It will be reflected even when editing the file, so please do it yourself.
 
 * Items that can be set
   (In most cases) file at the beginning of the file =#+hoge= type.
@@ -218,9 +222,11 @@ Although I'd like to adjust paper sizes and columns, first of all I will concent
 
     The default value is =nil= and no table of contents.
     You can specify 0 when creating the table of contents of chapter only.
+
 *** Character size =size=
     =small=, =normal=, =large= can be chosen.
     The default value is =normal=.
+
 *** Clause name =prefix=
     Common characters can be added to the beginning of each clause.
 
@@ -228,6 +234,7 @@ Although I'd like to adjust paper sizes and columns, first of all I will concent
     Is it making the clause name empty string to make * a common prefix?
 
     Please be aware that single-byte spaces can not be used due to Org-mode option specifications.
+
 * TIPS
 ** Split files using include feature
    Org-mode can include another =.org= file with =#+INCLUDE:=.
@@ -248,8 +255,8 @@ Although I'd like to adjust paper sizes and columns, first of all I will concent
      , #+INCLUDE: "afterword.org": minlevel 1
    #+END_SRC
 
-   =: minlevel = option to specify the headline level of the file to include.
+   =:minlevel= option to specify the headline level of the file to include.
    If you do not know the meaning, the file of each chapter starts with =* chapter name=
-   =: minlevel 1 = should be specified.
+   =:minlevel 1= should be specified.
 
    This is an original option in Org-mode, so if you examine it, information will come up.
