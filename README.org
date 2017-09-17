@@ -1,228 +1,255 @@
-#+TITLE: ox-novel 説明書
-#+AUTHOR: 本田そこ
+#+TITLE: ox-novel instructions
+#+SUBTITLE: Translated by Google Translate with help from Tim O'Callaghan
+#+AUTHOR: Honda there
+
+* NOTE: 2017-09-18 (TOC)
+  This is the first attempt at a translation, so be amazed if it makes any sense.
 
 * NOTE: 2017/02/17
 
-今後、 LuaTeX-ja を利用する方向にシフトしていくため、大きな変更が入る予定です。
+In the future, since we will shift to using LuaTeX-ja, big changes will be made.
 
-用紙サイズや段組の調整などをしていきたいと思っていますが、まずは lualatex による PDF への変換までに対応するため、出力される tex コードの形式を変えることに注力します。
+Although I'd like to adjust paper sizes and columns, first of all I will concentrate on changing the format of tex codes to be output in order to handle conversion to PDF by lualatex.
 
-* 何が出来るのか
-  Org-mode で小説を書くと 1 コマンドで A5 サイズ縦書き二段組の PDF が生成できる。
-* 使い方
-** 準備
-*** ox-novel.el を用意する。
-    =ox-novel.el= を Emacs からロード可能な場所に配置して、 =init.el= など、開始時に読み込まれる場所で
+* What does ox-novel do?
+  If you write a novel in Org-mode you can generate a PDF of A5 size vertical writing 2 columns with 1 command.
+
+* How to use ox-novel
+** Preparation
+
+*** Prepare ox-novel.el in spacemacs
+
+    then follow the instructions below.
+
+
+*** Prepare ox-novel.el in emacs
+
+    If you are using =spacemacs=, you can append it to the additional packages list:
+
     #+BEGIN_SRC emacs-lisp
-      (require 'ox-novel)
+    dotspacemacs-additional-packages '(
+                                      (ox-novel :location (recipe :fetcher github :repo "timoc/ox-novel")))
+
     #+END_SRC
-*** uplatex を使えるようにする。
-    必要なのは
+    if you are using your own emacs, then put =ox-novel.el= in a loadable place from Emacs and where it is loaded at startup, such as =init.el=
+
+    then make sure it is loaded when org is loaded with:
+
+    #+BEGIN_SRC emacs-lisp
+    ;;;;;;;;;;;;;;;;;;;;;;
+    (with-eval-after-load 'org
+      (require 'ox-novel))
+    #+END_SRC
+
+*** Enable to use uplatex.
+    What you need is
     - =uplatex=
     - =dvipdfmx=
-    というコマンドが使えるようになっていること。
+    It is to be able to use the command called.
 
-    私は Mac で [[http://www2.kumagaku.ac.jp/teacher/herogw/][Drag & Drop UpTeX]] を使って環境を整えました。
-    他の環境では試してませんごめんなさい。
-** 利用法
-   1. Org-mode で小説を書く。どのように書くかは下にあるサンプルを参照。
-   2. ファイルを開いた状態で =C-c C-e n o= する。
-   3. pdf がエクスポートされて、ついでに開く(開きたくない場合は =C-c C-e n p=)。
-** 推奨設定
+    I prepared the environment using Mac [[http://www2.kumagaku.ac.jp/teacher/herogw/] [Drag & Drop UpTeX]].
+    I am not trying in other environments. I'm sorry.
 
-*** ワードラップ機能をオフにする
-    =word-wrap= を =nil= にしておくことをおすすめします。
-    =init.el= あたりに以下の文言を追加しておきましょう。
+** Usage
+   1. Write a novel in Org-mode. See the sample below for how to write.
+   2. With the file open, enter =C-c C-e n o=.
+   3. pdf is exported and opens in parallel (=C-c C-e n p= if you do not want to open it).
+
+** Recommended setting
+
+*** Turn off word wrap function
+    =word-wrap= to =nil= is recommended.
+    Let's add the following wording around to =init.el=
 
     #+BEGIN_SRC emacs-lisp
       (setq word-wrap nil)
     #+END_SRC
 
-    何故かは、 =word-wrap= の on/off を切り替えてみればわかると思います。
+    Why, I think that you can understand by turning on / off  =word-wrap=.
 
-    Emacs の性質上、ワードラップ機能がオンだと、長い行の表示上の折り返しが、
-    文頭にあるスペース(あるいはタブ)で一旦行なわれることになるからです。
+    Due to the nature of Emacs, when the word wrap function is on, wrapping on long line display,
+    It will be done once in the space (or tab) at the beginning of the sentence.
 
-    例えば今の一文が、本来は次のように表示されて欲しいのに
-
-    #+BEGIN_SRC org
-        Emacs の性質上、ワードラップ機能がオンだと、長い行の表示上の折り
-      返しが、文頭にあるスペース(あるいはタブ)で一旦行なわれることになる
-      からです。
-    #+END_SRC
-
-    以下のように表示されてしまうからです。
+    For example, I would like a sentence to be displayed as follows
 
     #+BEGIN_SRC org
-        
-      Emacs の性質上、ワードラップ機能がオンだと、長い行の表示上の折り返
-      しが、文頭にあるスペース(あるいはタブ)で一旦行なわれることになるか
-      らです。
+        Due to the nature of Emacs, when the word wrap function is on, folding on long lines of display
+      Return will be made once in the space (or tab) at the beginning of the sentence
+      It is from.
     #+END_SRC
 
-    最初の一行(に見えるもの)は空白のみで改行文字すらないので、扱いが非常に面倒です。
+    It will be displayed as follows.
 
-* サンプル
+    #+BEGIN_SRC org
+
+      Due to the nature of Emacs, when the word wrap function is on, folding on long lines
+      But will it be done once in the space (or tab) at the beginning of the sentence
+      It is.
+    #+END_SRC
+
+    The first line (what it sees) is blank and does not even contain line feed characters, which is very troublesome.
+
+* sample
 ** =sample.org=
-   こんな感じに書きます。タイトルとか著者名とかの設定は普通の org-mode っぽい感じ。
+   I write it like this. Setting of title and author's name is like ordinary org-mode feeling.
    #+BEGIN_SRC org
-     ,#+TITLE: Sample:サンプル小説
-     ,#+SUBTITLE: Org-mode で記述された小説が如何様な PDF になるのか。
-     ,#+AUTHOR: 本田そこ
-     ,#+PUBLISHER: そこそこ
-     ,#+PUBLISHED: 平成 28 年 4 月 12 日
-     ,#+EDITION: 初版
-     ,#+OPTIONS: toc:0 size:small sec-prefix:"＊"
+     , #+TITLE: Sample: sample novel
+     , #+SUBTITLE: What kind of PDF will be the novel written in Org?
+     , #+AUTHOR: Honda there
+     , #+PUBLISHER: Somewhat
+     , #+PUBLISHED: April 12, Heisei 28
+     , #+EDITION: first edition
+     , #+OPTIONS: toc: 0 size: small sec-prefix: "*"
 
-     ,* 第一章
-       これより *第一章* を開始。
+     ,* chapter One
+       Starting * Chapter 1 * from this.
 
-     ,** 第一節
-        
-        サンプルテキスト。
+     , ** Section 1
 
-     ,** 第二節
+        Sample text.
 
-        サンプルテキストその 2。
+     , ** Section 2
 
-     ,* 第二章
+        Sample text part 2.
 
-       これからは第二章。
+     ,* Chapter II
 
-     ,** 第一節
+       From now on the second chapter.
 
-        このようにして[[かんじ][漢字]]にルビを振ることも可能。
+     , ** Section 1
+
+        In this way it is also possible to shake ruby ​​on [[kanji] [kanji]].
    #+END_SRC
 
 ** =sample.pdf=
-   タイトルページと奥付は横書きです。これは私の趣味です。
+   The title page and the impression are horizontal writing. This is my hobby.
 
-   縦横選択もいつか出来るようにしたいですが、プライオリティ低めです。ごめんなさい。
+   I would like to be able to select portrait / sideways someday, but the priority is low. I'm sorry.
 
-   [[file:./sample.pdf]]
+   [[file: ./ sample.pdf]]
 
-* 書き方
-  基本的に普通の Org-mode ですが、文字装飾は今のところ
-  - 太字
+* Writing
+  Basically it's an ordinary Org-mode, but character decoration is for now
+  - bold
   - verbatim
-  の二種類のみ対応しています。適宜増やします。
-  圏点欲しいんですが、記法をどうするか悩み中です。Org-mode に新たな記法を追加するのは避けたいんですよね、大仕事になりそうなので。
+  Only two kinds are supported. Increase accordingly.
+  I'd like to have a point, but I am worrying what to do about notation. I do not want to add a new notation to Org-mode, because it seems to be a big work.
 
-  他の書き方についてはざっくばらんにやります。
-  とりあえずルビ振りについては書いておきます。
-** ルビ振り
+  I will do it quite a bit about other writing styles.
+  I will write about Rubi swing for the time being.
+** Ruby swing
 
    #+BEGIN_SRC
-     [[かな][仮名]]
+     [[Kana] [Kana]]
    #+END_SRC
-   
-   という書き方をすればルビが振れます。
 
-   Org-mode の設定が初期状態のままだと編集時には _仮名_ と表示されます。
-   マウスオーバすると振られたルビがポップアップするので便利と言えば便利です。
+   Rubi will swing if you write it.
 
-   が、ルビ編集がちょっと面倒なので、
-   必要ならば以下のようにして記入した通りに表示することも出来ます。
+   If the Org-mode setting is still in the initial state, _ pseudonym _ is displayed at the time of editing.
+   Rubi waved by mouse over pop up so it's convenient to say convenient.
+
+   But since ruby ​​editing is a little troublesome,
+   If necessary, it can be displayed as it was written as follows.
 
    #+BEGIN_SRC emacs-lisp
      (org-toggle-link-display)
    #+END_SRC
-   で括弧付き表示か省略表示かを切り替え可能で、
+   It is possible to switch between parenthesized display and abbreviated display,
    #+BEGIN_SRC emacs-lisp
      (setq org-descriptive-links nil)
    #+END_SRC
-   を実行すれば、どういう状態からであっても括弧付き表示になります。
+   If you do, you will be in parenthesized display from whatever state you are in.
 
-   =org-toggle-link-display= は =M-x org-toggle-link-display= と実行できるので、
-   扱いが楽なのはこっちでしょうか。
-   
-   他の =.org= ファイル編集時にも反映されるのでお好みでどうぞ。
+   =org-toggle-link-display= can be executed as =M-x org-toggle-link-display=
+   Is it easy to handle?
 
-* 設定出来る項目
-  (大抵の場合)ファイル冒頭にある =#+hoge= 系のやつです。
-  
-** タイトル =#+TITLE:=
+   Other == .org= It will be reflected even when editing the file, so please do it yourself.
 
-   本のタイトルを設定します。
-   指定しないとファイル名が使われるので、設定しておきましょう。
+* Items that can be set
+  (In most cases) file at the beginning of the file =#+hoge= type.
 
-   長いとはみ出ます。私の LaTeX 力の問題で、自動改行はされません。
-   
-** サブタイトル =#+SUBTITLE:=
-   
-   タイトルページと奥付の両方に表示されます。
-   どちらもタイトルより少し小さめの文字で表示されます。
-   設定しない場合、空白が残ったりはしないので、付けるか否かはお好きに。
-   
-   タイトル同様、改行はされません。お気を付けください。
+** Title =#+TITLE:=
 
-** 著者名 =#+AUTHOR:=
+   Set the title of the book.
+   If not specified, the file name will be used, so let's set it up.
 
-   =#+AUTHOR:= の後に著者名を記述可能。これは、タイトルページと奥付に表示されます。
-   指定しなかった場合、デフォルトのユーザ名が使われるので、 P.N. とそれを使い分けている場合はご注意を。
-  
-** 発行元 =#+PUBLISHER:=
-   発行元の設定。例えばサークル名などにお使いください。
+   It protrudes for a long time. Because of my LaTeX power problem, automatic line feed is not done.
 
-** 連絡先 =#+ADDRESS:=
-   その名の通りです。改行には対応していないので、短かめにお願いいたします。
+** Subtitle =#+SUBTITLE:=
 
-** 発行日 =#+PUBLISHED:=
-   発行された日です。
-   特にフォーマットが指定されているわけではないので、どう書くかは自由です。
+   It is displayed on both the title page and the imprint.
+   Both are displayed slightly smaller than the title.
+   If you do not set it, no blanks will remain, so you like whether or not you like it.
 
-   何版目かの情報は別途設定できます。
+   Like the title, no line feed is done. Please take care.
 
-** エディション =#+EDITION:=
-   何版何刷目なのかの情報を設定すると良い感じです。
-   これもフォーマットはありません。御自由に。
+** Author name =#+AUTHOR:=
 
-** 印刷元 =#+PRINTER:=
+   =#+Author Name can be described after:=. This will be displayed on the title page and in the imprint.
+   If not specified, the default user name will be used, so be careful when using P. N. and it separately.
 
-   どこで印刷されるのか、されたのかを設定します。
-   奥付には「印刷　hoge」という形式で印字されます。
+** Publisher =#+PUBLISHER:=
+   Setting of publisher. For example, please use it for circle names.
 
-** 他、 =#+OPTIONS:= で指定可能なもの
+** Contact address =#+ADDRESS:=
+   That name is exactly as it is. Because it does not correspond to line feed, please short short.
 
-*** 目次生成の有無 =toc=
-    =toc:1= などとすると、目次が生成される。
-    今のところ意味があるのは =nil=, 0, 1 のみ。
-    1 以上の数を設定しても 1 と同じ見た目になる。
+** Issue date =#+PUBLISHED:=
+   It is the date of issue.
+   Since format is not specified in particular, how to write is free.
 
-    デフォルト値は =nil= で目次なし。
-    章のみの目次を作るときには 0 を指定すればよい。
-*** 文字サイズ =size=
-    =small=, =normal=, =large= の三種類から選べる。
-    デフォルト値は =normal= 。
-*** 節名の =prefix= 
-    各節の先頭に共通の文字を追加できます。
+   Information on what version is available can be set separately.
 
-    よくある使い方としては、
-    節名を空文字列にして ＊ を共通の prefix にする、とかでしょうか。
+** Edition =#+EDITION:=
+   It is a good feeling to set information on what version it is.
+   This also has no format. Freely.
 
-    Org-mode のオプションの仕様上、半角スペースが使えないので注意してください。
+** Printing source =#+PRINTER:=
+
+   Sets where to print or was done.
+   Imprint is printed in the form of "print hoge".
+
+** Other, =#+What can be specified with OPTIONS:=
+
+*** Table of Contents Generated / Unnecessary =toc=
+    =toc: 1= etc, a table of contents is generated.
+    For now it is only meaningful =nil=, 0, 1.
+    Even if you set a number greater than 1, it looks the same as 1.
+
+    The default value is =nil= and no table of contents.
+    You can specify 0 when creating the table of contents of chapter only.
+*** Character size =size=
+    =small=, =normal=, =large= can be chosen.
+    The default value is =normal=.
+*** Clause name =prefix=
+    Common characters can be added to the beginning of each clause.
+
+    As a common usage,
+    Is it making the clause name empty string to make * a common prefix?
+
+    Please be aware that single-byte spaces can not be used due to Org-mode option specifications.
 * TIPS
-** インクルード機能を使ってファイルを分割
-   Org-mode は =#+INCLUDE:= で別の =.org= ファイルをインクルードできる。
+** Split files using include feature
+   Org-mode can include another =.org= file with =#+INCLUDE:=.
 
-   エクスポートする時はそれらのファイルの中身が挿入されてから処理されるので、
-   例えば各章毎にファイルを分けてそれらを =#+INCLUDE:= すると、
-   1 ファイルあたりの大きさを小さく出来てよい感じになる。
-   
-   こんな感じ。
+   When exporting, since the contents of those files are inserted and processed,
+   For example, if you divide files into chapters and write them as =#+INCLUDE:=,
+   It makes me feel like I can reduce the size per file.
+
+   Like this.
    #+BEGIN_SRC org
-     ,#+TITLE: Include Sample
-     ,#+AUTHOR: 本田そこ
-     ,#+PUBLISHED: 2016/04/12
+     , #+TITLE: Include Sample
+     , #+AUTHOR: Honda there
+     , #+PUBLISHED: 2016/04/12
 
-     ,#+INCLUDE: "prelude.org" :minlevel 1
-     ,#+INCLUDE: "chapter1.org" :minlevel 1
-     ,#+INCLUDE: "chapter2.org" :minlevel 1
-     ,#+INCLUDE: "afterword.org" :minlevel 1
+     , #+INCLUDE: "prelude.org": minlevel 1
+     , #+INCLUDE: "chapter 1 .org": minlevel 1
+     , #+INCLUDE: "chapter2.org": minlevel 1
+     , #+INCLUDE: "afterword.org": minlevel 1
    #+END_SRC
-   
-   =:minlevel= オプションで、インクルードするファイルのヘッドラインレベルを指定。
-   意味がわからない場合、各章のファイルは =* 章名= から始めて、
-   =:minlevel 1= を指定しておけばよい。
-   
-   これは Org-mode に元からあるオプションなので、調べれば情報は出てきます。
+
+   =: minlevel = option to specify the headline level of the file to include.
+   If you do not know the meaning, the file of each chapter starts with =* chapter name=
+   =: minlevel 1 = should be specified.
+
+   This is an original option in Org-mode, so if you examine it, information will come up.
