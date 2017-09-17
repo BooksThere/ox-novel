@@ -1,4 +1,4 @@
-;; ox-novel.el --- translate .org into .latex using utbook for writing novel
+;;; ox-novel.el --- translate .org into .latex using utbook for writing novel
 
 ;; Copyright (C) 2016 BooksThere
 
@@ -255,7 +255,7 @@ INFO is a plist holding contextual information.  See
      ((string= type "fuzzy")
       (format "\\ruby[g]{%s}{%s}"
 	      (if desc desc raw-path) raw-path))
-     
+
      (t "nothing"))))
 
 (defun org-novel-paragraph (paragraph contents info)
@@ -319,7 +319,7 @@ holding export options."
    contents
 
    (org-novel--colophon info)
-   
+
    "
 \\end{document}
 "
@@ -389,8 +389,8 @@ channel."
 (defun org-novel-publish-to-latex (plist filename pub-dir)
   "Publish an Org file to LaTeX.
 
-PLIST is the property list for the given project. 
-FILENAME is the filename of the Org file to be published. 
+PLIST is the property list for the given project.
+FILENAME is the filename of the Org file to be published.
 PUB-DIR is the publishing directory.
 
 Return output file name."
@@ -417,7 +417,7 @@ first.
 When optional argument VISIBLE-ONLY is non-nil, don't export
 contents of hidden elements.
 
-Otional argument BODY-ONLY has no function. 
+Otional argument BODY-ONLY has no function.
 
 EXT-PLIST, when provided, is a property list with external
 parameters overriding Org default settings, but still inferior to
@@ -497,7 +497,7 @@ Processing is done by uplatex and dvipdfmx."
 
 ;; --------------------------------
 ;;  Provide
-;; 
+;;
 
 (provide 'ox-novel)
 ;;; ox-novel.el ends here
